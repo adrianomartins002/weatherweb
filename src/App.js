@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import CardWeather from "./components/card/Card";
+import { useState, useEffect } from "react";
+import { UsersService } from "./services/Users";
+import { Header } from "./components/header/Header";
 
 function App() {
+  const [users, setUsers] = useState([]);
+
+  async function getUsers() {
+    setUsers(await UsersService.getUsers());
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className="App"
+      style={{
+        padding: 50,
+        
+        display: "grid",
+        gridTemplateAreas: "300px 300px 300px",
+      }}
+    >
+      
+      <Header />
+      <div className="container-cards">
+        {users.map((item) => (
+          <CardWeather name={item.name} />
+        ))}
+      </div>
     </div>
   );
 }
